@@ -5,7 +5,7 @@ export interface userCreateInput {
   password: string
 }
 
-export interface userSearchInput {
+export interface userUniqueSearchInput {
   id?: number,
   email?: string
 }
@@ -14,7 +14,7 @@ const createUser = (data: userCreateInput) => {
   return prisma.users.create({ data })
 }
 
-const findUser = (data: userSearchInput) => {
+const findUser = (data: userUniqueSearchInput) => {
   const [uniqueKey] = Object.keys(data)
   return prisma.users.findUnique({ where: {[uniqueKey]: data[uniqueKey]}})
 }

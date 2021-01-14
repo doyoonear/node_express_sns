@@ -1,5 +1,7 @@
 import UserService from './UserService'
+import ArticleService from './ArticleService'
 
 export {
-  UserService
+  UserService,
+  ArticleService
 }

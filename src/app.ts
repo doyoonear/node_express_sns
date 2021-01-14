@@ -14,7 +14,7 @@ app.use(routes)
 const generalErrorHandler: ErrorRequestHandler = (err: ErrorWithStatusCode, req: Request, res: Response, next: NextFunction) => {
   const { message, statusCode } = err
   console.error(err)
-  res.status(statusCode).json({ message })
+  res.status(statusCode || 500).json({ message })
 }
 
 app.use(generalErrorHandler)

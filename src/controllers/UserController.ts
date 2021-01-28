@@ -1,7 +1,7 @@
-import bcrypt, { hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { UserService } from '../services'
-import { errorWrapper, errorGenerator} from '../errors'
+import { errorWrapper, errorGenerator } from '../errors'
 import { Request, Response } from 'express'
 import { userCreateInput } from '../services/UserService'
 const { AUTH_TOKEN_SALT } = process.env
@@ -17,12 +17,12 @@ const signUp = errorWrapper(async (req: Request, res: Response) => {
 
   const createdUser = await UserService.createUser({
     email,
-    password: hashedPassword
+    password: hashedPassword,
   })
 
   res.status(201).json({
     message: 'user created',
-    email: createdUser.email
+    email: createdUser.email,
   })
 })
 
@@ -44,5 +44,5 @@ const logIn = errorWrapper(async (req: Request, res: Response) => {
 
 export default {
   logIn,
-  signUp
+  signUp,
 }

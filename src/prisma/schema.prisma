@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["uncheckedScalarInputs"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 datasource db {
@@ -8,55 +8,88 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model articles {
-  id         Int             @id @default(autoincrement())
-  user_id    Int
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  profile     Profile?
+  created_at  DateTime     @default(now())
+  followers   Follower[]
+  followees   Followee[]
+  post        Post[]
+  comments    Comment[]
+  likes       Like[]
+  collections Collection[]
+}
+
+model Profile {
+  id      Int     @id @default(autoincrement())
+  img_src String?
+  bio     String?
+  user    User    @relation(fields: [userId], references: [id])
+  userId  Int
+}
+
+model Post {
+  id               Int        @id @default(autoincrement())
+  content          String?
+  created_at       DateTime   @default(now())
+  comments         Comment[]
+  images           Image[]
+  likes            Like[]
+  user             User       @relation(fields: [userId], references: [id])
+  userId           Int
+  parentCollection Collection @relation(fields: [collectionId], references: [id])
+  collectionId     Int
+}
+
+model Comment {
+  id          Int    @id @default(autoincrement())
+  content     String
+  commenter   User   @relation(fields: [commenterId], references: [id])
+  commenterId Int
+  post        Post   @relation(fields: [postId], references: [id])
+  postId      Int
+}
+
+model Image {
+  id               Int          @id @default(autoincrement())
+  srcUrl           String
+  parentCollection Collection[]
+  post             Post         @relation(fields: [postId], references: [id])
+  postId           Int
+}
+
+model Followee {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model Follower {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model Like {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int
+}
+
+model Hashtag {
+  id      Int    @id @default(autoincrement())
+  content String
+}
+
+model Collection {
+  id         Int    @id @default(autoincrement())
   title      String
-  body       String
-  status     articles_status @default(DRAFT)
-  created_at DateTime?       @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-  users      users           @relation(fields: [user_id], references: [id])
-  comments   comments[]
-
-  @@index([user_id], name: "user_id")
-}
-
-model comments {
-  id         Int       @id @default(autoincrement())
-  article_id Int
-  user_id    Int
-  body       String
-  created_at DateTime? @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-  articles   articles  @relation(fields: [article_id], references: [id])
-  users      users     @relation(fields: [user_id], references: [id])
-
-  @@index([article_id], name: "article_id")
-  @@index([user_id], name: "user_id")
-}
-
-model users {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  password   String
-  status     users_status @default(ACTIVE)
-  created_at DateTime?    @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-  articles   articles[]
-  comments   comments[]
-}
-
-enum articles_status {
-  DRAFT
-  PUBLISHED
-  DELETED
-}
-
-enum users_status {
-  ACTIVE
-  INACTIVE
+  posts      Post[]
+  user       User   @relation(fields: [userId], references: [id])
+  userId     Int
+  coverImage Image  @relation(fields: [imageId], references: [id])
+  imageId    Int
 }

@@ -16,20 +16,10 @@ const userData: Prisma.UserCreateInput = {
 }
 
 const createUser = () => {
-  prisma.user.create({
+  return prisma.user.create({
     data: userData
   })
 }
-
-const findAllUsers = ()=> {
-  prisma.user.findMany({
-    include: {
-      posts: true,
-      profile: true
-    }
-  })
-} 
-
 
 export default {
   createUser,

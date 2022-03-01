@@ -1,18 +1,23 @@
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import { UserService } from '../services'
 import { errorWrapper, errorGenerator } from '../errors'
 import { Request, Response } from 'express'
-const { AUTH_TOKEN_SALT } = process.env
+
+// TODO: login auth
+// import bcrypt from 'bcryptjs'
+// import jwt from 'jsonwebtoken'
+// const { AUTH_TOKEN_SALT } = process.env
 
 const signUp = errorWrapper(async (req: Request, res: Response) => {
-  await UserService.createUser();
-})
+  console.log('signUp controller');
+  console.log(req.body)
+  const createdUser = await UserService.createUser();
 
-const logIn = errorWrapper(async (req: Request, res: Response) => {
+  return res.status(201).json({
+    message: 'user created',
+    email: createdUser.email,
+  })
 })
 
 export default {
-  logIn,
   signUp,
 }

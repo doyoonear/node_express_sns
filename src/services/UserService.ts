@@ -1,38 +1,23 @@
 import prisma from '../prisma'
+import { Prisma } from '@prisma/client'
 
-export interface UserCreateInput {
-  name: string,
-  email: string,
-  password: string
-  posts: PostCreateInput
-  profile?: ProfileCreateInput
+const userData: Prisma.UserCreateInput = {
+  name: 'Alice',
+  email: 'alice@prisma.io',
+  password: 'zz',
+  posts: {
+    create: { 
+      title: 'Hello World'
+    },
+  },
+  profile: {
+    create: { bio: 'I like turtles' },
+  },
 }
-
-interface PostCreateInput {
-  title: string,
-  content: string
-}
-
-interface ProfileCreateInput {
-  bio: string
-}
-
 
 const createUser = () => {
   prisma.user.create({
-    data: {
-      name: 'Alice',
-      email: 'alice@prisma.io',
-      password: 'zz',
-      posts: {
-        create: { 
-          title: 'Hello World'
-        },
-      },
-      profile: {
-        create: { bio: 'I like turtles' },
-      },
-    }
+    data: userData
   })
 }
 

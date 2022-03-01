@@ -9,7 +9,8 @@
     "dev": "concurrently npm:dev:*",
     "format": "prisma format --schema ./src/prisma/schema.prisma",
     "generate": "prisma generate --schema ./src/prisma/schema.prisma",
-    "migrate": "prisma migrate dev --preview-feature --schema ./src/prisma/schema.prisma"
+    "migrate": "prisma migrate dev --preview-feature --schema ./src/prisma/schema.prisma",
+    "push": "prisma db push --preview-feature --schema ./src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,8 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "prisma": "^3.10.0",
+    "save": "^2.4.0"
   }
 }

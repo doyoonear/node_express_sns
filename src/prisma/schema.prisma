@@ -29,19 +29,6 @@ model Profile {
   userId  Int
 }
 
-model Post {
-  id               Int        @id @default(autoincrement())
-  content          String?
-  created_at       DateTime   @default(now())
-  comments         Comment[]
-  images           Image[]
-  likes            Like[]
-  user             User       @relation(fields: [userId], references: [id])
-  userId           Int
-  parentCollection Collection @relation(fields: [collectionId], references: [id])
-  collectionId     Int
-}
-
 model Comment {
   id          Int    @id @default(autoincrement())
   content     String
@@ -84,12 +71,34 @@ model Hashtag {
   content String
 }
 
+model Post {
+  id               Int             @id @default(autoincrement())
+  content          String?
+  created_at       DateTime        @default(now())
+  comments         Comment[]
+  images           Image[]
+  likes            Like[]
+  parentCollection CollectedPost[]
+  postedBy         User            @relation(fields: [userId], references: [id])
+  userId           Int
+}
+
 model Collection {
-  id         Int    @id @default(autoincrement())
-  title      String
-  posts      Post[]
-  user       User   @relation(fields: [userId], references: [id])
-  userId     Int
-  coverImage Image  @relation(fields: [imageId], references: [id])
-  imageId    Int
+  id          Int             @id @default(autoincrement())
+  title       String
+  posts       CollectedPost[]
+  collectedBy User            @relation(fields: [collectorId], references: [id])
+  collectorId Int
+  coverImage  Image           @relation(fields: [imageId], references: [id])
+  imageId     Int
+}
+
+model CollectedPost {
+  post         Post       @relation(fields: [postId], references: [id])
+  postId       Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId Int
+  collectedAt  DateTime   @default(now())
+
+  @@id([postId, collectionId])
 }

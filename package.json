@@ -7,7 +7,9 @@
     "dev:build": "tsc -w",
     "dev:run": "nodemon build/server.js",
     "dev": "concurrently npm:dev:*",
-    "format": "prisma format --schema ./src/prisma/schema.prisma"
+    "format": "prisma format --schema ./src/prisma/schema.prisma",
+    "generate": "prisma generate --schema ./src/prisma/schema.prisma",
+    "migrate": "prisma migrate dev --preview-feature --schema ./src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",

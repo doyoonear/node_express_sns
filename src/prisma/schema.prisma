@@ -11,11 +11,13 @@ datasource db {
 model User {
   id          Int          @id @default(autoincrement())
   name        String
+  email       String
+  password    String
   profile     Profile?
   created_at  DateTime     @default(now())
   followers   Follower[]
   followees   Followee[]
-  post        Post[]
+  posts       Post[]
   comments    Comment[]
   likes       Like[]
   collections Collection[]
@@ -73,6 +75,7 @@ model Hashtag {
 
 model Post {
   id               Int             @id @default(autoincrement())
+  title  String
   content          String?
   created_at       DateTime        @default(now())
   comments         Comment[]

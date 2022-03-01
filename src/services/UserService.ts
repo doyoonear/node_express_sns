@@ -1,25 +1,49 @@
 import prisma from '../prisma'
 
-export interface userCreateInput {
+export interface UserCreateInput {
+  name: string,
   email: string,
   password: string
+  posts: PostCreateInput
+  profile?: ProfileCreateInput
 }
 
-export interface userUniqueSearchInput {
-  id?: number,
-  email?: string
+interface PostCreateInput {
+  title: string,
+  content: string
 }
 
-const createUser = (data: userCreateInput) => {
-  return prisma.users.create({ data })
+interface ProfileCreateInput {
+  bio: string
 }
 
-const findUser = (data: userUniqueSearchInput) => {
-  const [uniqueKey] = Object.keys(data)
-  return prisma.users.findUnique({ where: {[uniqueKey]: data[uniqueKey]}})
+
+const createUser = () => {
+  prisma.user.create({
+    data: {
+      name: 'Alice',
+      email: 'alice@prisma.io',
+      password: 'zz',
+      posts: {
+        create: { title: 'Hello World' },
+      },
+      profile: {
+        create: { bio: 'I like turtles' },
+      },
+    }
+  })
 }
+
+const findAllUsers = ()=> {
+  prisma.user.findMany({
+    include: {
+      posts: true,
+      profile: true
+    }
+  })
+} 
+
 
 export default {
   createUser,
-  findUser
 }

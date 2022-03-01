@@ -25,7 +25,9 @@ const createUser = () => {
       email: 'alice@prisma.io',
       password: 'zz',
       posts: {
-        create: { title: 'Hello World' },
+        create: { 
+          title: 'Hello World'
+        },
       },
       profile: {
         create: { bio: 'I like turtles' },

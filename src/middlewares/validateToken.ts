@@ -10,6 +10,7 @@ export interface Token {
 }
 
 const validateToken = errorWrapper(async (req: Request, res: Response, next: NextFunction) => {
+  console.log('validateToken')
 })
 
 export default validateToken

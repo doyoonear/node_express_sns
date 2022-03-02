@@ -7,10 +7,28 @@ import { Request, Response } from 'express'
 // import jwt from 'jsonwebtoken'
 // const { AUTH_TOKEN_SALT } = process.env
 
+const mockDataForSignUp = {
+  name: 'Zyaa',
+  email: 'zyaa@prisma.io',
+  password: 'wrwrwqq',
+  posts: {
+    create: { 
+      title: `Today's Look`
+    },
+  },
+  profile: {
+    create: { bio: 'I like caps, hoodies' },
+  },
+}
+
+
 const signUp = errorWrapper(async (req: Request, res: Response) => {
-  console.log('signUp controller');
-  console.log(req.body)
-  const createdUser = await UserService.createUser();
+  const { name, email, password } = req.body
+  if (!email) errorGenerator({ statusCode: 400 });
+
+  const createdUser = await UserService.createUser({
+    name, email, password
+  });
 
   return res.status(201).json({
     message: 'user created',
